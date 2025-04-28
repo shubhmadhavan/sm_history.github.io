@@ -1,0 +1,32 @@
+{
+    "events": [
+      {
+        "year": "2006-03-01",
+        "event": "Y2K Bug",
+        "info1": "Potential computer system failures",
+        "info2": "A non-issue in retrospect",
+        "imgUrl": "12.png"
+      },
+      {
+        "year": "2006-03-05",
+        "event": "9/11 Attacks",
+        "info1": "Terrorist attacks in the USA",
+        "info2": "Changed global security policies",
+        "img": "12.png"
+      },
+      {
+        "year": "-1973",
+        "event": "-1973 Event",
+        "info1": "Terrorist attacks in the USA",
+        "info2": "Changed global security policies",
+        "imgUrl": "12.png"
+      },
+      {
+        "year": "-1273",
+        "event": "-1273 Event",
+        "info1": "Terrorist attacks in the USA",
+        "info2": "Changed global security policies",
+        "imgUrl": "12.png"
+      }
+    ]
+  }
