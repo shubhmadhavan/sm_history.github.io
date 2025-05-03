@@ -1,3 +1,5 @@
+
+
 let eventsData = [];
 let usedEvents = [];
 let tableCards = [];
@@ -32,31 +34,37 @@ function pickStartingCards() {
 }
 
 // Setup question card
-// Setup question card
 function setupQuestionCard() {
     const questionEvent = document.getElementById('question-event');
-    questionEvent.textContent = currentQuestion.event;
-
     const questionCard = document.getElementById('question-card');
+
+    if (!currentQuestion) {
+        questionEvent.textContent = "";
+        questionCard.style.opacity = '0'; // Hide the card
+        return;
+    }
+
+    questionCard.style.display = 'block'; // Ensure visible if new question
+
+    questionEvent.textContent = currentQuestion.event;
     questionCard.setAttribute('draggable', true);
+    
+    // Remove old image overlays if any
+    const oldImgDiv = questionCard.querySelector('.card-img');
+    if (oldImgDiv) oldImgDiv.remove();
 
-    // Check if imgUrl exists, and if so, set it as the background
     if (currentQuestion.imgUrl) {
-        questionCard.style.position = 'relative'; // To position the overlay inside the card
+        questionCard.style.position = 'relative';
 
-        // Create the background image element
         const imgDiv = document.createElement('div');
         imgDiv.classList.add('card-img');
-
         imgDiv.style.backgroundImage = `url('data_images/${currentQuestion.imgUrl}')`;
-        // Set the opacity for the background image
-
-        // Append the image overlay to the question card
         questionCard.appendChild(imgDiv);
     }
 
     questionCard.addEventListener('dragstart', dragStart);
 }
+
 
 
 // Update table with cards and drop zones
@@ -79,6 +87,8 @@ function updateTable() {
         table.appendChild(cardElement);
         table.appendChild(createDropZone(index + 1));
     });
+
+
 }
 
 
@@ -186,16 +196,17 @@ function updateHearts() {
 // Pick next question card
 function pickNextQuestion() {
     const remaining = eventsData.filter(event => !usedEvents.includes(event));
+    
     if (remaining.length === 0) {
-        // Show alert with a Replay option
-        const replayMessage = "You've placed all events!";
-
-        if (confirm(`${replayMessage} Replay?`)) {
-            // Reload the page if the user confirms
-            location.reload();
-        } else {
-            disableDragging();
-        }
+        // No next question available
+        currentQuestion = null;
+        setupQuestionCard(); // Clear or hide question card
+        disableDragging();
+        setTimeout(() => {
+            if (confirm("You've placed all events! Replay?")) {
+                location.reload();
+            }
+        }, 100); // small timeout to let DOM update
         return;
     }
 
@@ -204,6 +215,7 @@ function pickNextQuestion() {
     currentQuestion = next;
     setupQuestionCard();
 }
+
 
 
 // Disable dragging after game over
@@ -218,30 +230,22 @@ function handleDrop(e) {
     e.preventDefault();
     const position = parseInt(e.currentTarget.dataset.position);
 
-    // Insert question card into the tableCards with a 'wrong' property (false by default)
-    tableCards.splice(position, 0, { ...currentQuestion, wrong: false });
+    const insertedCard = { ...currentQuestion, wrong: false };
+    tableCards.splice(position, 0, insertedCard);
 
-    // Update the table before checking the order
     updateTable();
 
-    // Check if the order is correct
     if (isOrderCorrect()) {
         score++;
         document.getElementById('score').textContent = `Score: ${score}`;
     } else {
-        // Mark the card as wrong and update the table
-        tableCards[tableCards.length - 1].wrong = true;
+        insertedCard.wrong = true;
 
-        // Update the hearts and handle strikes
         strikes++;
         updateHearts();
 
-        // Check if game over condition is met (3 strikes)
         if (strikes >= 3) {
-            // First, update the table with the wrong card
             updateTable();
-
-            // Then show the game over message
             setTimeout(() => {
                 alert("Game Over! Final Score: " + score);
                 disableDragging();
@@ -252,16 +256,18 @@ function handleDrop(e) {
         tableCards.sort((a, b) => new Date(a.year) - new Date(b.year));
     }
 
-    // Pick next question card
     pickNextQuestion();
     updateTable();
 }
 
 
+
 // Handle manual drop
 function handleManualDrop(position) {
     position = parseInt(position);
-    tableCards.splice(position, 0, { ...currentQuestion, wrong: false });
+    
+    const insertedCard = { ...currentQuestion, wrong: false };
+    tableCards.splice(position, 0, insertedCard);
 
     // Update the table before checking the order
     updateTable();
@@ -274,7 +280,7 @@ function handleManualDrop(position) {
         updateHearts();
 
         // Mark the card as wrong and update the table
-        tableCards[tableCards.length - 1].wrong = true;
+        insertedCard.wrong = true;
 
         tableCards.sort((a, b) => new Date(a.year) - new Date(b.year));
 
@@ -295,3 +301,7 @@ function handleManualDrop(position) {
 
 // Start
 loadEvents();
+
+
+
+

@@ -8,25 +8,25 @@
         "imgUrl": "12.png"
       },
       {
-        "year": "2006-03-05",
-        "event": "9/11 Attacks",
+        "year": "-2006-03-05",
+        "event": "-2006 Event",
         "info1": "Terrorist attacks in the USA",
         "info2": "Changed global security policies",
         "img": "12.png"
       },
       {
-        "year": "-1973",
-        "event": "-1973 Event",
+        "year": "550",
+        "event": "550 Event",
         "info1": "Terrorist attacks in the USA",
         "info2": "Changed global security policies",
         "imgUrl": "12.png"
       },
       {
-        "year": "-1273",
-        "event": "-1273 Event",
+        "year": "1550",
+        "event": "1550 Event",
         "info1": "Terrorist attacks in the USA",
         "info2": "Changed global security policies",
         "imgUrl": "12.png"
-      }
+      } 
     ]
   }
