@@ -1,34 +1,91 @@
+
 /* Card Styles */
+
+#question-card:hover {
+    animation: peekFlip 0.4s ease forwards;
+
+}
+
+
+
+.card {
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+.card:hover::before {
+    animation: shineSwipe 0.6s ease;
+}
+
+@keyframes shineSwipe {
+    0% { left: -75%; }
+    100% { left: 125%; }
+}
+
+
+
+@keyframes peekFlip {
+    0% { transform: perspective(600px) rotateY(0deg); }
+    50% { transform: perspective(600px) rotateY(10deg); }
+    100% { transform: perspective(600px) rotateY(0deg); }
+}
+
+
+@keyframes twitch {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    50% { transform: translateX(2px); }
+    75% { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+}
+
+
 
 .card-arrow {
     position: absolute;
     bottom: 10px;
     left: 10px;
     font-size: 14px;
-    color: #dad7d7;
+    color: #c9c9c9;
     cursor: pointer;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .card-arrow:hover {
     color: #ffffff;
-    transform: scale(1.2); /* Optional: Slightly enlarge the arrow on hover */
+    transform: scale(1.2);
 }
 
-.card > .card-arrow 
-{
-    opacity:0;
+.card > .card-arrow {
+    opacity: 0;
 }
 
-.card.hidden > .card-arrow 
-{
-    opacity:1;
+.card.hidden > .card-arrow {
+    opacity: 1;
 }
 
 h3 {
     margin-top: 5px;
-    color:rgba(255, 255, 255, 0.8);
-    }
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+}
 
 .card-img {
     position: absolute;
@@ -39,119 +96,114 @@ h3 {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.2; 
+    opacity: 0.15;
+    transition: transform 0.6s ease;
 }
-    
+
 .card.hidden > .card-img {
-    transform: rotateY(-180deg); 
+    transform: rotateY(-180deg);
 }
 
-.card-info{
-color:rgba(234, 234, 234, 0.6);
+.card-info {
+    color: rgba(235, 235, 235, 0.65);
+    font-size: 0.9rem;
 }
-
 
 .card {
     width: 150px;
     height: 220px;
-    background: linear-gradient(to bottom,  rgba(88, 177, 190, 0.6) 20%, rgba(170, 169, 169, 0.6) 20%);
-    border: 1px solid rgba(125, 125, 125, 0.5);
-    border-radius: 8px;
+    border: 1px solid rgba(120, 120, 120, 0.4);
+    border-radius: 12px;
     margin: 10px;
     padding: 10px;
     text-align: center;
     position: relative;
     cursor: pointer;
-    transition: transform 0.2s; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
-.card:hover{ transform: scale(1.05);} 
 
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
 
-.card.hidden {
-    background:  rgba(170, 169, 169, 0.6);
-    transform: rotateY(180deg); 
+.card.hidden, .card.wrong.hidden {
+    background: rgba(100, 100, 100, 0.5) !important;
+    transform: rotateY(180deg);
+}
+
+.card {
+background: linear-gradient(to bottom, rgba(88, 177, 190, 0.49) 20%, rgba(100, 100, 100, 0.5) 100%);
+
 }
 
 .card.wrong {
-    background: linear-gradient(to bottom, rgb(156, 85, 85) 20%, rgba(170, 169, 169, 0.6) 20%) !important;
+    background: linear-gradient(to bottom, rgba(156, 85, 85, 1) 20%, rgba(100, 100, 100, 0.5) 100%) !important;
+  animation: twitch 0.2s linear;
 }
-
 
 #question-card {
-    background: linear-gradient(to bottom,  rgba(71, 98, 133, 0.6) 20%, rgba(170, 169, 169, 0.6) 20%);
+    background: linear-gradient(to bottom, rgba(71, 98, 133, 0.7) 20%, rgba(100, 100, 100, 0.5) 100%);
 }
-
 
 .card-info.hidden {
     display: none;
 }
 
-
-
-.card > .card-info-2{
-    color:rgba(234, 234, 234, 0);
+.card > .card-info-2,
+.card.wrong > .card-info-2 {
+    color: rgba(234, 234, 234, 0);
 }
 
-.card.hidden > .card-info-2 {
-    transform: rotateY(-180deg); 
-    color:rgba(234, 234, 234, 0.6);
+.card.hidden > .card-info-2,
+.card.wrong.hidden > .card-info-2 {
+    transform: rotateY(-180deg);
+    color: rgba(234, 234, 234, 0.6);
 }
-
-
 
 #card-container-table {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap; /* Optional: Allows wrapping to next line if too many cards */
+    flex-wrap: wrap;
 }
-
-
-
 
 /* Drop Zone Styles */
 .drop-zone {
     width: 25px;
     height: 150px;
-
     border: 2px dashed rgba(214, 214, 214, 0.2);
     margin: 0 5px;
-    display: inline-blorgba(241, 241, 241, 0.6);
-   
+    display: inline-block;
+    transition: background 0.3s ease, border 0.3s ease;
 }
 
 .drop-zone:hover {
-    background: rgba(128, 128, 128, 0.3);
-    border: 2px dashed rgba(214, 214, 214, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px dashed rgba(214, 214, 214, 0.4);
 }
 
-
 /* Other Styles */
-body{
-    background-color: rgb(71, 71, 71);
+body {
+    background-color: #2e2d2d;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .Advance {
-    font: Calibri;
     font-size: 1.2rem;
     text-align: center;
-    color:rgba(203, 201, 201, 0.6);
-
+    color: rgba(203, 201, 201, 0.7);
     transform: translateX(-50%);
-    margin-bottom: 10px; /* Optional: Adds some spacing from the edge */
-    
+    margin-bottom: 10px;
     width: 19rem !important;
     height: 7rem !important;
     opacity: 1;
-    
-	background-color: rgba(181, 180, 180, 0.1);
-	border:1px solid rgb(175, 174, 174);
-
-    filter: drop-shadow(0px 12px 12px rgba(0, 0, 0, 0.2));
-
-	border-radius: 12px;
-
+    background-color: rgba(200, 200, 200, 0.07);
+    border: 1px solid rgba(200, 200, 200, 0.3);
+    border-radius: 16px;
+    filter: drop-shadow(0px 12px 12px rgba(0, 0, 0, 0.25));
     position: fixed;
     bottom: -3rem;
     left: 50%;
@@ -163,24 +215,15 @@ body{
     left: 0;
     right: 0;
     bottom: 2rem;
-    display: flex; 
+    display: flex;
     justify-content: center;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
     font-size: 1.6em;
 }
 
-
 .heart {
- 
     margin: 0 5px;
 }
-
-
-
-
-
 
 /* Container */
 .game-container {
@@ -188,3 +231,18 @@ body{
     justify-content: center;
     margin: 20px 0;
 }
+
+/* Media Queries */
+@media only screen and (max-width: 1379px) {
+    body {
+        zoom: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 1249px) {}
+
+@media only screen and (max-width: 1549px) {}
+
+@media only screen and (max-width: 999px) {}
+
+@media only screen and (max-width: 899px) {}
